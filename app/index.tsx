@@ -2,14 +2,10 @@ import { KeyboardAvoidingView, Platform, SafeAreaView, StyleSheet, Text, TextInp
 
 import { ThemedText } from '@/components/ThemedText';
 import { Colors } from '@/constants/Colors';
-import { useRouter } from 'expo-router';
+import { useLogin } from '@/hooks/useLogin';
 
 export default function LoginScreen() {
-  const router = useRouter();
-
-  const handleLoginPress = () => {
-    router.push('/(tabs)/chat-list');
-  };
+  const { username, password, error, setUsername, setPassword, handleLoginPress } = useLogin();
 
   return (
     <KeyboardAvoidingView
@@ -25,6 +21,9 @@ export default function LoginScreen() {
           style={styles.input}
           placeholder="Nombre de usuario"
           placeholderTextColor="#999"
+          autoCapitalize="none"
+          value={username}
+          onChangeText={setUsername}
         />
         {/* Campo de contraseña */}
         <TextInput
@@ -32,11 +31,16 @@ export default function LoginScreen() {
           placeholder="Contraseña"
           placeholderTextColor="#999"
           secureTextEntry={true} // Oculta el texto para la contraseña
+          value={password}
+          onChangeText={setPassword}
         />
         {/* Botón de inicio de sesión */}
-        <TouchableOpacity style={styles.button} onPress={handleLoginPress}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handleLoginPress}>
           <Text style={styles.buttonText}>Entrar</Text>
         </TouchableOpacity>
+        <Text style={styles.errorText}>{error}</Text>
       </SafeAreaView>
     </KeyboardAvoidingView>
   );
@@ -86,5 +90,14 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  errorText: {
+    height: 50,
+    color: '#ee4141ff',
+    marginTop: 10,
+    marginBottom: 10,
+    textAlign: 'center',
+    fontSize: 14,
+    width: '100%',
   },
 });
