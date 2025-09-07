@@ -4,17 +4,10 @@ import { SafeAreaView, StyleSheet, TextInput, TouchableOpacity } from 'react-nat
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 
+import { Colors } from '@/constants/Colors';
+import { USER_MOCK } from '@/mocks';
 import { useState } from 'react';
 
-const USER_MOCK = {
-  "profile": {
-    "name": "John",
-    "phone": "+123456789",
-    "photo": "photo_url",
-    "status": "Available",
-    "lastSeen": "5 minutes ago"
-  }
-}
 
 export default function ProfileScreen() {
   const [isEditing, setIsEditing] = useState(false);
@@ -80,8 +73,8 @@ export default function ProfileScreen() {
 
 const styles = StyleSheet.create({
   safeArea: {
-    flex: 1, // Es crucial que SafeAreaView ocupe todo el espacio
-    backgroundColor: '#7b92f7ff',
+    flex: 1,
+    backgroundColor: Colors.dark.background,
   },
   container: {
     flex: 0.94,

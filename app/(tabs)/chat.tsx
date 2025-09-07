@@ -3,41 +3,9 @@ import { FlatList, KeyboardAvoidingView, Platform, SafeAreaView, StyleSheet, Tex
 import Message from '@/components/Message';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { Colors } from '@/constants/Colors';
+import { SPECIFIC_CHATS_MOCK } from '@/mocks';
 
-const SPECIFIC_CHATS_MOCK = {
-  "specificChats": [
-    {
-      "contact": "John",
-      "messages": [
-        {
-          "sender": "John",
-          "content": "Hey, how are you?",
-          "time": "10:00 AM"
-        },
-        {
-          "sender": "You",
-          "content": "I'm good, thanks! How about you?",
-          "time": "10:05 AM"
-        }
-      ]
-    },
-    {
-      "contact": "Maria",
-      "messages": [
-        {
-          "sender": "Maria",
-          "content": "Do you want to go out tonight?",
-          "time": "yesterday"
-        },
-        {
-          "sender": "You",
-          "content": "Sure, where do you want to go?",
-          "time": "yesterday"
-        }
-      ]
-    }
-  ]
-}
 
 export default function ChatScreen() {
   return (
@@ -75,7 +43,7 @@ export default function ChatScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1, // Es crucial que SafeAreaView ocupe todo el espacio
-    backgroundColor: '#7b92f7ff',
+    backgroundColor: Colors.dark.background,
     paddingBottom: 50,
   },
   container: {

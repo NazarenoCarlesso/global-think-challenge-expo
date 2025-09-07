@@ -3,32 +3,16 @@ import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
 import ChatItem from '@/components/ChatItem';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-
-const CHATS_MOCK = {
-  "chats": [
-    {
-      "id": 1,
-      "contact": "John",
-      "lastMessage": "Hey, how are you?",
-      "lastMessageTime": "10:00 AM"
-    },
-    {
-      "id": 2,
-      "contact": "Maria",
-      "lastMessage": "Do you want to go out tonight?",
-      "lastMessageTime": "yesterday"
-    },
-    {
-      "id": 3,
-      "contact": "Peter",
-      "lastMessage": "I'll be late for the meeting",
-      "lastMessageTime": "2 hours ago"
-    }
-  ]
-}
+import { Colors } from '@/constants/Colors';
+import { CHATS_MOCK } from '@/mocks';
+import { router } from 'expo-router';
 
 
 export default function ChatListScreen() {
+  const handleChatPress = (id: number) => {
+    router.push('/(tabs)/chat')
+  }
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ThemedView style={styles.container}>
@@ -41,8 +25,7 @@ export default function ChatListScreen() {
               contact={item.contact}
               lastMessage={item.lastMessage}
               lastMessageTime={item.lastMessageTime}
-              onPress={() => console.log('PRESS')}
-            // onPress={() => handleChatPress(item.id)}
+              onPress={() => handleChatPress(item.id)}
             />
           )}
           style={styles.list}
@@ -54,25 +37,27 @@ export default function ChatListScreen() {
 
 const styles = StyleSheet.create({
   safeArea: {
-    flex: 1, // Es crucial que SafeAreaView ocupe todo el espacio
-    backgroundColor: '#7b92f7ff',
+    flex: 1,
+    backgroundColor: Colors.dark.background,
   },
   container: {
     flex: 0.94,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
-    backgroundColor: ''
+    padding: 0,
+    backgroundColor: Colors.dark.background,
   },
   header: {
+    width: '100%',
     fontSize: 24,
     fontWeight: 'bold',
     padding: 20,
     borderBottomWidth: 1,
+    borderBottomColor: '#666666ff',
     textAlign: 'center',
   },
   list: {
     width: '100%',
-    backgroundColor: '#97e294ff',
+    backgroundColor: Colors.dark.background,
   },
 });

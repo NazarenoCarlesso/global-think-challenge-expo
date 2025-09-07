@@ -1,3 +1,4 @@
+import { Colors } from '@/constants/Colors';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
@@ -27,8 +28,8 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-    backgroundColor: '#94a0e2ff',
+    borderBottomColor: '#666666ff',
+    backgroundColor: Colors.dark.background,
   },
   content: {
     flex: 1,
@@ -37,16 +38,16 @@ const styles = StyleSheet.create({
   chatName: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
+    color: Colors.dark.text,
   },
   lastMessage: {
     fontSize: 14,
-    color: '#666',
+    color: '#a0a0a0ff',
     marginTop: 4,
   },
   time: {
     fontSize: 12,
-    color: '#999',
+    color: '#a0a0a0ff',
   },
 });
 
