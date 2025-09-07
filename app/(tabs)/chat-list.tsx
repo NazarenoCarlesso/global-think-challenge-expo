@@ -4,13 +4,12 @@ import ChatItem from '@/components/ChatItem';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
-import { ChatContext } from '@/context/ChatContext';
+import { useChat } from '@/hooks/useChat';
 import { router } from 'expo-router';
-import { useContext } from 'react';
 
 
 export default function ChatListScreen() {
-  const { chats } = useContext(ChatContext);
+  const { chats } = useChat();
 
   const handleChatPress = (id: number) => {
     router.push({

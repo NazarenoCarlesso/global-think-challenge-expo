@@ -5,27 +5,11 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 
 import { Colors } from '@/constants/Colors';
-import { UserType } from '@/interface';
-import { USER_MOCK } from '@/mocks';
-import { useState } from 'react';
+import { useUserEdit } from '@/hooks/useUserEdit';
 
 
 export default function ProfileScreen() {
-  const [isEditing, setIsEditing] = useState(false);
-  const [User, setUser] = useState<UserType>(USER_MOCK.profile);
-
-  const handleEditPress = () => {
-    setIsEditing(!isEditing);
-  };
-
-  const handleChangeText = (key: string, value: string) => {
-    setUser((state) => ({ ...state, [key]: value }));
-  };
-
-  const handleSavePress = () => {
-    // console.log('User saved!', User);
-    setIsEditing(false);
-  };
+  const { user, isEditing, handleEditPress, handleChangeText, handleSavePress } = useUserEdit();
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -33,11 +17,11 @@ export default function ProfileScreen() {
         {/* Sección del avatar */}
         <ThemedView style={styles.avatarContainer}>
           <Image
-            source={{ uri: USER_MOCK.profile.photo }}
+            source={{ uri: user.photo }}
             style={styles.avatar}
           />
           <ThemedText style={styles.statusText}>
-            {USER_MOCK.profile.status}
+            {user.status}
           </ThemedText>
         </ThemedView>
         {/* Sección de información */}
@@ -47,11 +31,11 @@ export default function ProfileScreen() {
             {isEditing ? (
               <TextInput
                 style={styles.editInput}
-                value={User.name}
+                value={user.name}
                 onChangeText={(text) => handleChangeText('name', text)}
               />
             ) : (
-              <ThemedText style={styles.infoText}>{User.name}</ThemedText>
+              <ThemedText style={styles.infoText}>{user.name}</ThemedText>
             )}
           </ThemedView>
           <ThemedView style={styles.infoRow}>
@@ -59,16 +43,16 @@ export default function ProfileScreen() {
             {isEditing ? (
               <TextInput
                 style={styles.editInput}
-                value={User.phone}
+                value={user.phone}
                 onChangeText={(text) => handleChangeText('phone', text)}
               />
             ) : (
-              <ThemedText style={styles.infoText}>{User.phone}</ThemedText>
+              <ThemedText style={styles.infoText}>{user.phone}</ThemedText>
             )}
           </ThemedView>
           <ThemedView style={styles.infoRow}>
             <ThemedText style={styles.label}>Última conexión:</ThemedText>
-            <ThemedText style={styles.infoText}>{User.lastSeen}</ThemedText>
+            <ThemedText style={styles.infoText}>{user.lastSeen}</ThemedText>
           </ThemedView>
           {/* Botón de editar/guardar */}
           <TouchableOpacity

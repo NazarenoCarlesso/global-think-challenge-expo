@@ -24,3 +24,10 @@ export interface SpecificChatType {
   contact: string;
   messages: MessageType[];
 }
+
+export interface ChatContextType {
+  chats: ChatType[];
+  messages: SpecificChatType[];
+  setChats: React.Dispatch<React.SetStateAction<ChatType[]>>;
+  setMessages: React.Dispatch<React.SetStateAction<SpecificChatType[]>>;
+}

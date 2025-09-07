@@ -4,29 +4,12 @@ import Message from '@/components/Message';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
-import { ChatContext } from '@/context/ChatContext';
-import { useLocalSearchParams } from 'expo-router';
-import { useContext, useMemo, useState } from 'react';
+import { useChat } from '@/hooks/useChat';
+import { useState } from 'react';
 
 
 export default function ChatScreen() {
-  const { id } = useLocalSearchParams();
-
-  const { messages: allChats, sendMessage } = useContext(ChatContext);
-
-  const messages = useMemo(() => {
-    // Asegúrate de que allChats no esté vacío y que el ID exista
-    if (!allChats || allChats.length === 0) {
-      return [];
-    }
-    const chat = allChats.find(c => c.id === Number(id));
-    // Si no se encuentra el chat, devuelve un arreglo vacío
-    if (!chat) {
-      return [];
-    }
-    // Si se encuentra, devuelve los mensajes invertidos
-    return chat.messages.toReversed();
-  }, [allChats, id]);
+  const { messagesById, sendMessage } = useChat();
 
   const [inputText, setInputText] = useState<string>('');
 
@@ -35,8 +18,8 @@ export default function ChatScreen() {
   }
 
   const handleSendButton = () => {
+    sendMessage(inputText);
     setInputText('');
-    sendMessage(Number(id), inputText);
   }
 
   return (
@@ -48,8 +31,7 @@ export default function ChatScreen() {
       <SafeAreaView style={styles.safeArea}>
         {/* Lista de mensajes */}
         <FlatList
-          data={messages}
-          // TODO: Revisar estas keys si se puede usar index
+          data={messagesById}
           keyExtractor={(_, index) => String(index)}
           renderItem={({ item }) => <Message {...item} isMyMessage={item.sender === "You"} />}
           inverted // Para que la lista empiece desde abajo
