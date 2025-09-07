@@ -34,6 +34,7 @@ export const CHATS_MOCK = {
 export const SPECIFIC_CHATS_MOCK = {
   "specificChats": [
     {
+      "id": 1,
       "contact": "John",
       "messages": [
         {
@@ -49,6 +50,7 @@ export const SPECIFIC_CHATS_MOCK = {
       ]
     },
     {
+      "id": 2,
       "contact": "Maria",
       "messages": [
         {
@@ -61,6 +63,17 @@ export const SPECIFIC_CHATS_MOCK = {
           "content": "Sure, where do you want to go?",
           "time": "yesterday"
         }
+      ]
+    },
+    {
+      "id": 3,
+      "contact": "Peter",
+      "messages": [
+        {
+          "sender": "Peter",
+          "content": "I'll be late for the meeting",
+          "time": "yesterday"
+        },
       ]
     }
   ]

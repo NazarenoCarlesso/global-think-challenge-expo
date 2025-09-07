@@ -4,20 +4,51 @@ import Message from '@/components/Message';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
-import { SPECIFIC_CHATS_MOCK } from '@/mocks';
+import { ChatContext } from '@/context/ChatContext';
+import { useLocalSearchParams } from 'expo-router';
+import { useContext, useMemo, useState } from 'react';
 
 
 export default function ChatScreen() {
+  const { id } = useLocalSearchParams();
+
+  const { messages: allChats, sendMessage } = useContext(ChatContext);
+
+  const messages = useMemo(() => {
+    // Asegúrate de que allChats no esté vacío y que el ID exista
+    if (!allChats || allChats.length === 0) {
+      return [];
+    }
+    const chat = allChats.find(c => c.id === Number(id));
+    // Si no se encuentra el chat, devuelve un arreglo vacío
+    if (!chat) {
+      return [];
+    }
+    // Si se encuentra, devuelve los mensajes invertidos
+    return chat.messages.toReversed();
+  }, [allChats, id]);
+
+  const [inputText, setInputText] = useState<string>('');
+
+  const handleTextChange = (text: string) => {
+    setInputText(text)
+  }
+
+  const handleSendButton = () => {
+    setInputText('');
+    sendMessage(Number(id), inputText);
+  }
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 96 : 0}
     >
       <SafeAreaView style={styles.safeArea}>
         {/* Lista de mensajes */}
         <FlatList
-          data={SPECIFIC_CHATS_MOCK.specificChats[0].messages}
+          data={messages}
           // TODO: Revisar estas keys si se puede usar index
           keyExtractor={(_, index) => String(index)}
           renderItem={({ item }) => <Message {...item} isMyMessage={item.sender === "You"} />}
@@ -30,8 +61,12 @@ export default function ChatScreen() {
             style={styles.input}
             placeholder="Escribe un mensaje..."
             placeholderTextColor="#999"
+            value={inputText}
+            onChangeText={(text) => handleTextChange(text)}
           />
-          <TouchableOpacity style={styles.sendButton}>
+          <TouchableOpacity
+            style={styles.sendButton}
+            onPress={() => handleSendButton()}>
             <ThemedText style={styles.sendButtonText}>Enviar</ThemedText>
           </TouchableOpacity>
         </ThemedView>
@@ -47,18 +82,20 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
   },
   container: {
-    flex: 0.9,
+    flex: 1,
+    backgroundColor: Colors.dark.background,
   },
   messagesList: {
     paddingHorizontal: 10,
+    backgroundColor: '#0f1011ff',
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
     borderTopWidth: 1,
-    borderTopColor: '#ccc',
-    backgroundColor: '#fff',
+    borderTopColor: '#666666ff',
+    backgroundColor: Colors.dark.background,
   },
   input: {
     flex: 1,

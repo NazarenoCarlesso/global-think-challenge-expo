@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
   theirMessage: {
-    backgroundColor: '#E5E5EA', // Gris claro para los mensajes de otros
+    backgroundColor: '#2c2c2cff',
     alignSelf: 'flex-start',
   },
   messageText: {

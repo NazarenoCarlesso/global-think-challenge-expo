@@ -4,13 +4,19 @@ import ChatItem from '@/components/ChatItem';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
-import { CHATS_MOCK } from '@/mocks';
+import { ChatContext } from '@/context/ChatContext';
 import { router } from 'expo-router';
+import { useContext } from 'react';
 
 
 export default function ChatListScreen() {
+  const { chats } = useContext(ChatContext);
+
   const handleChatPress = (id: number) => {
-    router.push('/(tabs)/chat')
+    router.push({
+      pathname: '/chat',
+      params: { id }
+    })
   }
 
   return (
@@ -18,7 +24,7 @@ export default function ChatListScreen() {
       <ThemedView style={styles.container}>
         <ThemedText style={styles.header}>Chats</ThemedText>
         <FlatList
-          data={CHATS_MOCK.chats}
+          data={chats}
           keyExtractor={(item) => String(item.id)}
           renderItem={({ item }) => (
             <ChatItem

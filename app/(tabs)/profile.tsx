@@ -5,21 +5,25 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 
 import { Colors } from '@/constants/Colors';
+import { UserType } from '@/interface';
 import { USER_MOCK } from '@/mocks';
 import { useState } from 'react';
 
 
 export default function ProfileScreen() {
   const [isEditing, setIsEditing] = useState(false);
-  const [userName, setUserName] = useState(USER_MOCK.profile.name);
+  const [User, setUser] = useState<UserType>(USER_MOCK.profile);
 
   const handleEditPress = () => {
     setIsEditing(!isEditing);
   };
 
+  const handleChangeText = (key: string, value: string) => {
+    setUser((state) => ({ ...state, [key]: value }));
+  };
+
   const handleSavePress = () => {
-    // Aquí puedes agregar la lógica para guardar los cambios en un estado global o una API
-    console.log("Nombre guardado:", userName);
+    // console.log('User saved!', User);
     setIsEditing(false);
   };
 
@@ -32,7 +36,9 @@ export default function ProfileScreen() {
             source={{ uri: USER_MOCK.profile.photo }}
             style={styles.avatar}
           />
-          <ThemedText style={styles.statusText}>{USER_MOCK.profile.status}</ThemedText>
+          <ThemedText style={styles.statusText}>
+            {USER_MOCK.profile.status}
+          </ThemedText>
         </ThemedView>
         {/* Sección de información */}
         <ThemedView style={styles.infoContainer}>
@@ -41,20 +47,28 @@ export default function ProfileScreen() {
             {isEditing ? (
               <TextInput
                 style={styles.editInput}
-                value={userName}
-                onChangeText={setUserName}
+                value={User.name}
+                onChangeText={(text) => handleChangeText('name', text)}
               />
             ) : (
-              <ThemedText style={styles.infoText}>{userName}</ThemedText>
+              <ThemedText style={styles.infoText}>{User.name}</ThemedText>
             )}
           </ThemedView>
           <ThemedView style={styles.infoRow}>
             <ThemedText style={styles.label}>Teléfono:</ThemedText>
-            <ThemedText style={styles.infoText}>{USER_MOCK.profile.phone}</ThemedText>
+            {isEditing ? (
+              <TextInput
+                style={styles.editInput}
+                value={User.phone}
+                onChangeText={(text) => handleChangeText('phone', text)}
+              />
+            ) : (
+              <ThemedText style={styles.infoText}>{User.phone}</ThemedText>
+            )}
           </ThemedView>
           <ThemedView style={styles.infoRow}>
             <ThemedText style={styles.label}>Última conexión:</ThemedText>
-            <ThemedText style={styles.infoText}>{USER_MOCK.profile.lastSeen}</ThemedText>
+            <ThemedText style={styles.infoText}>{User.lastSeen}</ThemedText>
           </ThemedView>
           {/* Botón de editar/guardar */}
           <TouchableOpacity
@@ -80,7 +94,8 @@ const styles = StyleSheet.create({
     flex: 0.94,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    backgroundColor: Colors.dark.background,
+    width: '100%',
   },
   avatarContainer: {
     alignItems: 'center',
@@ -91,7 +106,8 @@ const styles = StyleSheet.create({
     height: 150,
     borderRadius: 75,
     borderWidth: 2,
-    borderColor: '#ddd',
+    borderColor: '#666666ff',
+    backgroundColor: '#202020ff',
   },
   statusText: {
     marginTop: 10,
@@ -101,41 +117,44 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     width: '100%',
-    paddingHorizontal: 20,
     marginBottom: 20,
+    alignItems: 'center',
   },
   infoRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 15,
+    paddingHorizontal: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: '#666666ff',
+    width: '100%',
   },
   label: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#555',
+    color: Colors.dark.text,
   },
   infoText: {
     fontSize: 16,
-    color: '#333',
+    color: Colors.dark.text,
   },
   editInput: {
     fontSize: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#007AFF',
-    color: '#333',
+    color: Colors.dark.text,
     minWidth: 150,
     textAlign: 'right',
   },
   editButton: {
-    width: '80%',
+    width: '50%',
     height: 50,
     backgroundColor: '#007AFF',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 8,
+    marginTop: 16
   },
   buttonText: {
     color: '#fff',
